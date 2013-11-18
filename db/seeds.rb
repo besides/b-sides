@@ -7,3 +7,6 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 # Environment variables (ENV['...']) can be set in the file config/application.yml.
 # See http://railsapps.github.io/rails-environment-variables.html
+puts 'ROLES'
+Role.find_or_create_by_name('Artist')
+Role.find_or_create_by_name('Fan')
