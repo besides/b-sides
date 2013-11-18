@@ -9,4 +9,4 @@
 # See http://railsapps.github.io/rails-environment-variables.html
 puts 'ROLES'
 Role.find_or_create_by_name('Artist')
-Role.find_or_create_by_name('Fan')
+Role.find_or_create_by_name('User')
