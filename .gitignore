@@ -78,3 +78,5 @@ pickle-email-*.html
 /config/application.yml
 /log/
 /tmp/
+ 
+.env
