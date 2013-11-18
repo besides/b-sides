@@ -29,7 +29,13 @@ Learn more about "Installing Rails":http://railsapps.github.io/installing-rails.
 
 h2. Database
 
-This application uses SQLite with ActiveRecord.
+This application uses Postgresql with ActiveRecord
+
+* Install postgress: `brew install postgress`
+* Create local database cluster: `initdb /usr/local/var/postgres -E utf8`
+  * also involves creating LaunchCtl as describe in install message
+* Start cluster `launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist`
+* Create development database: 
 
 h2. Development
 

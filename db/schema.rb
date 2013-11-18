@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20131118013502) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "assets", force: true do |t|
     t.integer  "user_id"
     t.string   "uri"
@@ -20,7 +23,7 @@ ActiveRecord::Schema.define(version: 20131118013502) do
     t.datetime "updated_at"
   end
 
-  add_index "assets", ["user_id"], name: "index_assets_on_user_id"
+  add_index "assets", ["user_id"], name: "index_assets_on_user_id", using: :btree
 
   create_table "roles", force: true do |t|
     t.string   "name"
@@ -36,6 +39,6 @@ ActiveRecord::Schema.define(version: 20131118013502) do
     t.datetime "updated_at"
   end
 
-  add_index "users", ["role_id"], name: "index_users_on_role_id"
+  add_index "users", ["role_id"], name: "index_users_on_role_id", using: :btree
 
 end
