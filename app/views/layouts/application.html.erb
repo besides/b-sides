@@ -2,22 +2,18 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= content_for?(:title) ? yield(:title) : "Home" %></title>
-    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "no description" %>">
-    <%= stylesheet_link_tag "application", :media => "all" %>
-    <%= javascript_include_tag "application" %>
+    <title><%= content_for?(:title) ? yield(:title) : "B Sides" %></title>
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "B Sides" %>">
+    <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
+    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
     <%= csrf_meta_tags %>
-    <%= yield(:head) %>
   </head>
-  <body class="<%= controller_name %> <%= action_name %>">
-    <div class="navbar navbar-fixed-top">
-      <nav class="navbar-inner">
-        <div class="container">
-          <%= render 'layouts/navigation' %>
-        </div>
-      </nav>
-    </div>
-    <div id="main" role="main">
+  <body>
+    <%# application layout styled for Twitter Bootstrap 2.3 %>
+    <header>
+      <%= render 'layouts/navigation' %>
+    </header>
+    <main role="main">
       <div class="container">
         <div class="content">
            <div class="row">
@@ -29,7 +25,7 @@
           <footer>
           </footer>
         </div>
-      </div> <!--! end of .container -->
-    </div> <!--! end of #main -->
+      </div>
+    </main>
   </body>
 </html>
