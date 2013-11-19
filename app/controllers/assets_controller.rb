@@ -1,5 +1,4 @@
 class AssetsController < ApplicationController
-  before_filter :require_login
   Stripe.api_key = ENV['STRIPE_API_KEY']
 
   S3_BUCKET_NAME = ENV['AWS_BUCKET']
@@ -7,26 +6,27 @@ class AssetsController < ApplicationController
   S3_ACCESS_KEY = ENV['AWS_ACCESS_KEY']
 
   def index
-    @user = find(param[:user_id])
-    @assets = user.assets
+    @user = User.find(params[:user_id])
+    @assets = @user.assets
   end
 
   def pay
-    @asset = Asset.find(param[:id])
+    @asset = Asset.find(params[:id])
 
     if !UserAssetPurchase.where(user: current_user, asset: @asset).empty?
       redirect_to user_asset_path(@asset.user, @asset)
+    end
 
   end
 
   def postPay
-    @asset = Asset.find(param[:id])
+    @asset = Asset.find(params[:id])
 
     begin
       Stripe::Charge.create(
         :amount => ENV['ASSET_FEE'],
         :currency => "usd",
-        :card => param[:stripe_token], # obtained with Stripe.js
+        :card => params[:stripe_token], # obtained with Stripe.js
         :description => "Charge for asset"
       )
 
@@ -41,13 +41,15 @@ class AssetsController < ApplicationController
       err  = e.json_body[:error]
       flash.now[:error] = err.message
       render 'pay'
+    end
   end
 
   def show
-    @asset = Asset.find(param[:id])
+    @asset = Asset.find(params[:id])
 
     if UserAssetPurchase.where(user: current_user, asset: @asset).empty?
       redirect_to user_asset_pay_path(@asset.user, @asset)
+    end
   end
 
   def new
@@ -70,7 +72,7 @@ class AssetsController < ApplicationController
   end
 
   def edit
-    @asset = Asset.find(param[:id])
+    @asset = Asset.find(params[:id])
 
     if @asset.user != current_user
       flash[:error] = 'Can not edit this asset'
@@ -79,7 +81,7 @@ class AssetsController < ApplicationController
   end
 
   def update
-    @asset = Asset.find(param[:id])
+    @asset = Asset.find(params[:id])
 
     if @asset.user != current_user
       flash[:error] = 'Can not edit this asset'
