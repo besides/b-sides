@@ -14,10 +14,8 @@ BSides::Application.routes.draw do
 
   match 'login' => 'user_sessions#new', :as => :login, :via => :get
   match 'logout' => 'user_sessions#destroy', :as => :logout, :via => :get
-  
-  resource :oauth do
-    get :callback
-  end
-  match "oauth/:provider" => "oauths#oauth", :as => :auth_at_provider, :via => :get
 
+  post "oauth/callback" => "oauths#callback"
+  get "oauth/callback" => "oauths#callback" # for use with Github
+  get "oauth/:provider" => "oauths#oauth", :as => :auth_at_provider
 end

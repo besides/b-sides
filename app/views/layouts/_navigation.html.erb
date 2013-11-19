@@ -14,21 +14,16 @@
               <li><%= link_to 'Home', root_path %><li>
               <%= render 'layouts/navigation_links' %>
             </ul>
+            <ul class="nav pull-right">
+              <% if current_user %>
+                <li><%= link_to current_user.email, edit_user_path(current_user.id) %></li>
+                <li><%= link_to "Logout", :logout %></li>
+              <% else %>
+                <li><%= link_to 'Login with Facebook', auth_at_provider_path(:provider => :facebook) %></li>
+              <% end %>
+            </ul>
           </nav>
         </div>
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="#">Link</a></li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><a href="#">Action</a></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
-              <li class="divider"></li>
-              <li><a href="#">Separated link</a></li>
-            </ul>
-          </li>
-        </ul>
       </div>
     </div>
   </div>

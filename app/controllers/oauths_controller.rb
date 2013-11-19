@@ -5,11 +5,11 @@ class OauthsController < ApplicationController
   # sends the user on a trip to the provider,
   # and after authorizing there back to the callback url.
   def oauth
-    login_at(params[:provider])
+    login_at(auth_params[:provider])
   end
 
   def callback
-    provider = params[:provider]
+    provider = auth_params[:provider]
     begin
     if @user = login_from(provider)
       redirect_to root_path, :notice => "Logged in from #{provider.titleize}!"
@@ -31,5 +31,10 @@ class OauthsController < ApplicationController
       puts e.message
       puts e.backtrace
     end
+  end
+
+  private
+  def auth_params
+    params.permit(:code, :provider)
   end
 end
