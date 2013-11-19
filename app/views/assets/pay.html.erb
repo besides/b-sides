@@ -1,0 +1,55 @@
+
+<form id="payment-form" autocomplete="off" method="POST" action="<%= user_asset_pay_post_path(current_user) %>">
+        <div class="form-row">
+            <div>
+                <label class="control-label" for="number">Card Number</label>
+                <input type="text" size="20" class="form-control" id="number" data-stripe="number"/>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-md-2 padding-1">
+                <label class="control-label" for="number">CVC</label>
+                <input type="text" size="4" class="form-control" id="cvc" data-stripe="cvc"/>
+            </div>
+            <div class="col-md-2 padding-1">
+                <label class="control-label" for="number">MM</label>
+                <input type="text" size="2" class="form-control" id="exp-month" data-stripe="exp-month"/>
+            </div>
+            <div class="col-md-8 padding-1">
+                <label class="control-label" for="number">YYYY</label>
+                <input type="text" size="4" class="form-control" id="exp-year" data-stripe="exp-year"/>
+            </div>
+        </div>
+        <br/>
+        <div>
+            <button id="button" class="btn btn-lg btn-success" type="submit">Submit</button>
+        </div>
+</form>
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script>
+	Stripe.setPublishableKey("<%= ENV['STRIPE_PUBLISHABLE_KEY'] %>");
+	Stripe.card.createToken({
+	    number: $('#number').val(),
+	    cvc: $('#cvc').val(),
+	    exp_month: $('#exp-month').val(),
+	    exp_year: $('#exp-year').val()
+	}, stripeResponseHandler);
+
+	function stripeResponseHandler(status, response) {
+	    if (response.error) {
+	        ...
+	        // show the errors on the form
+	        $(".payment-errors").text(response.error.message);
+	    } else {
+	        var form$ = $("#payment-form");
+	        // token contains id, last4, and card type
+	        var token = response['id'];
+	        // insert the token into the form so it gets submitted to the server
+	        form$.append("<input type='hidden' name='stripe_token' value='" + token + "'/>");
+	        // and submit
+	        form$.get(0).submit();
+	    }
+	}
+
+</script>

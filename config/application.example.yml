@@ -9,3 +9,10 @@
 #
 # GMAIL_USERNAME: changeme
 # GMAIL_PASSWORD: changeme
+
+AWS_ACCESS_KEY: "changeme"
+AWS_ACCESS_SECRET: "changme"
+AWS_BUCKET: "changeme"
+STRIPE_API_KEY: "changeme"
+STRIPE_PUBLISHABLE_KEY: "changeme"
+ASSET_FEE: 2000

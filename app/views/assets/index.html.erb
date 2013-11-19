@@ -1,0 +1,9 @@
+<h3>Assets</h3>
+<div class="assets">
+  <% @assets.each do |asset| %>
+  	<div class="asset">
+  	    <h4><%= link_to asset.uri, user_asset_path(asset.user, asset) %></h4>
+  		<%= asset.uri %>
+  	</div>
+  <% end %>
+</div>

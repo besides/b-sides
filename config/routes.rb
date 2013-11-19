@@ -8,6 +8,9 @@ BSides::Application.routes.draw do
     member do
       get :activate
     end
+    resources :assets
+    get   'assets/:id/pay' => "assets#pay",      :as => 'asset_pay' 
+    post  'assets/:id/pay' => "assets#postPay",  :as => 'asset_pay_post' 
   end
 
   resources :user_sessions
@@ -18,4 +21,7 @@ BSides::Application.routes.draw do
   post "oauth/callback" => "oauths#callback"
   get "oauth/callback" => "oauths#callback" # for use with Github
   get "oauth/:provider" => "oauths#oauth", :as => :auth_at_provider
+
+
+	get 'assets/signS3put' => "assets#signS3put"
 end

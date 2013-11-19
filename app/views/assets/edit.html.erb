@@ -1,0 +1,6 @@
+<h2>Edit Asset</h2>
+
+<h3>Upload Asset</h3>
+<%= s3_uploader_form callback_url: user_asset(current_user, @asset), callback_method: "PUT" callback_param: "asset[uri]", id: "s3-uploader" do %>
+	<%= file_field_tag :file, multiple: false %>
+<% end %>
