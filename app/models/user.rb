@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   has_many :user_subscriptions
   accepts_nested_attributes_for :providers
 
-  attr_accessible :email, :name, :providers_attributes
+  attr_accessible :email, :name, :role_id, :providers_attributes
 
   belongs_to :role
 

@@ -4,14 +4,17 @@
 <table>
   <tr>
     <th>User</th>
-    <th></th>
+    <th>Email</th>
+    <th>Role</th>
     <th></th>
     <th></th>
   </tr>
 
 <% @users.each do |user| %>
   <tr>
+    <td><%= h user.name %></td>
     <td><%= user.email %></td>
+    <td><%= user.role.name if user.role %></td>
     <td><%= link_to 'Show', user %></td>
     <td><%= link_to 'Edit', edit_user_path(user) %></td>
     <td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>

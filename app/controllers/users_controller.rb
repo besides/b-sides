@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_filter :require_login_from_http_basic, :only => [:login_from_http_basic]
+  before_filter :require_administrator
   skip_before_filter :require_login, :only => [:index, :new, :create, :activate, :login_from_http_basic]
 
   # GET /users
@@ -63,6 +64,7 @@ class UsersController < ApplicationController
 
 
     respond_to do |format|
+      byebug
       if @user.update_attributes(user_params)
         format.html { redirect_to(@user, :notice => 'User was successfully updated.') }
         format.json  { head :ok }
@@ -103,7 +105,7 @@ class UsersController < ApplicationController
 
   private
     def user_params
-      params.require(:user).permit(:email, :password, :password_confirmation)
+      params.require(:user).permit(:email, :name, :role_id)
     end
 
 end

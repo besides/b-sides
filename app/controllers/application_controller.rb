@@ -16,4 +16,14 @@ class ApplicationController < ActionController::Base
   def current_users_list
     current_users.map {|u| u.email}.join(", ")
   end
+
+  def require_administrator
+    unless logged_in? && current_user.role && current_user.role.name == "administrator"
+      flash[:warning] = "Only adminstrators can access the #{controller_name} controller"
+      redirect_to controller: "home", action: "index"
+      false
+    else
+      true
+    end
+  end
 end
