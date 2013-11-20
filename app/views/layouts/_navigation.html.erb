@@ -16,7 +16,7 @@
             </ul>
             <ul class="nav pull-right">
               <% if current_user %>
-                <li><%= link_to current_user.email, edit_user_path(current_user.id) %></li>
+                <li><%= link_to current_user.name, edit_user_path(current_user.id) %></li>
                 <li><%= link_to "Logout", :logout %></li>
               <% else %>
                 <li><%= link_to 'Login with Facebook', auth_at_provider_path(:provider => :facebook) %></li>

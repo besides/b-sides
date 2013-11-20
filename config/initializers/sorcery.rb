@@ -112,7 +112,8 @@ Rails.application.config.sorcery.configure do |config|
   config.facebook.key =  ENV['FACEBOOK_APP_ID'] || "603248736378183"
   config.facebook.secret = ENV['FACEBOOK_APP_SECRET'] || "4ea531715755cfe3fe62ddc47e6ff5dc"
   config.facebook.callback_url = ENV['FACEBOOK_CALLBACK_URL'] || "http://quiet-bastion-1058.herokuapp.com/oauth/callback?provider=facebook"
-  config.facebook.user_info_mapping = {:email => "name"}
+  config.facebook.user_info_mapping = {email: "email", name: "name"}
+  config.facebook.scope = "email,offline_access"
   config.facebook.access_permissions = ["email", "publish_stream"]
 
   # config.github.key = ""
