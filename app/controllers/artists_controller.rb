@@ -6,7 +6,7 @@ class ArtistsController < UsersController
   # GET /artists
   # GET /artists.json
   def index
-    @artists = User.all.select(&:artist?)
+    @artists = Role.find_by_name("artist").users
 
     respond_to do |format|
       format.html # index.html.erb

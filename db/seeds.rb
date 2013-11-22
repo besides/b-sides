@@ -8,5 +8,10 @@
 # Environment variables (ENV['...']) can be set in the file config/application.yml.
 # See http://railsapps.github.io/rails-environment-variables.html
 puts 'ROLES'
-Role.find_or_create_by_name('Artist')
-Role.find_or_create_by_name('User')
+Role.find_or_create_by_name('administrator')
+Role.find_or_create_by_name('artist')
+
+puts 'Artists'
+User.find_or_create_by_name('Johnny B. Goode') {|u| u.role = Role.find_by_name('artist')}
+
+puts "Assets"

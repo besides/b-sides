@@ -14,6 +14,9 @@ BSides::Application.routes.draw do
   end
 
   resources :user_sessions
+  resources :artists, as: "artists" do
+    resources :assets, as: "assets"
+  end
 
   match 'login' => 'user_sessions#new', :as => :login, :via => :get
   match 'logout' => 'user_sessions#destroy', :as => :logout, :via => :get
@@ -21,7 +24,4 @@ BSides::Application.routes.draw do
   post "oauth/callback" => "oauths#callback"
   get "oauth/callback" => "oauths#callback" # for use with Github
   get "oauth/:provider" => "oauths#oauth", :as => :auth_at_provider
-
-
-	get 'assets/signS3put' => "assets#signS3put"
 end
