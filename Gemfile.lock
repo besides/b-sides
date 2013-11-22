@@ -61,6 +61,8 @@ GEM
     figaro (0.7.0)
       bundler (~> 1.0)
       rails (>= 3, < 5)
+    filepicker-rails (1.0.0)
+      rails (>= 3.2)
     formatador (0.2.4)
     guard (2.2.4)
       formatador (>= 0.2.4)
@@ -134,7 +136,7 @@ GEM
     rails_12factor (0.0.2)
       rails_serve_static_assets
       rails_stdout_logging
-    rails_layout (0.5.2)
+    rails_layout (0.5.3)
     rails_serve_static_assets (0.0.1)
     rails_stdout_logging (0.0.3)
     railties (4.0.0)
@@ -213,6 +215,7 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.0.0)
   figaro
+  filepicker-rails
   guard-bundler
   guard-rails
   high_voltage

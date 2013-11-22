@@ -6,6 +6,7 @@ gem 'pg'
 gem 'unicorn'
 gem 'sorcery'
 gem 'zencoder'
+gem 'filepicker-rails'
 
 gem 'sass-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.3.0'
