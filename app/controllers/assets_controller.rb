@@ -1,15 +1,17 @@
+##
+# Manipulate assets of a particular artist (User)
 class AssetsController < ApplicationController
-  Stripe.api_key = ENV['STRIPE_API_KEY']
+  before_filter :require_artist, :except => [:index, :show]
+  before_filter :require_payment, :only => [:index, :show]
 
-  S3_BUCKET_NAME = ENV['AWS_BUCKET']
-  S3_SECRET_KEY = ENV['AWS_ACCESS_SECRET']
-  S3_ACCESS_KEY = ENV['AWS_ACCESS_KEY']
-
+  # GET /artists/:artist_id/assets/
   def index
-    @user = User.find(params[:user_id])
-    @assets = @user.assets
+    @artist = User.find(params[:artist_id])
+    @assets = @artist.assets
   end
 
+  # Have a user pay to get access to an artist's assets
+  # GET /artists/:artist_id/assets/pay
   def pay
     @asset = Asset.find(params[:id])
 
@@ -19,6 +21,7 @@ class AssetsController < ApplicationController
 
   end
 
+  # POST /artists/:artist_id/assets/pay
   def postPay
     @asset = Asset.find(params[:id])
 
@@ -44,6 +47,8 @@ class AssetsController < ApplicationController
     end
   end
 
+  # Show a particular asset
+  # GET /artists/:artist_id/assets/:asset_id
   def show
     @asset = Asset.find(params[:id])
 
@@ -52,6 +57,7 @@ class AssetsController < ApplicationController
     end
   end
 
+  # GET /artists/:artist_id/assets/new
   def new
     @asset = Asset.new
     @asset.user = current_user
@@ -71,6 +77,7 @@ class AssetsController < ApplicationController
     end    
   end
 
+  # GET /artists/:artist_id/assets/:asset_id/edit
   def edit
     @asset = Asset.find(params[:id])
 
@@ -80,6 +87,7 @@ class AssetsController < ApplicationController
     end
   end
 
+  # POST /artists/:artist_id/assets/:asset_id
   def update
     @asset = Asset.find(params[:id])
 
@@ -99,8 +107,9 @@ class AssetsController < ApplicationController
     end
   end
 
+  # DELETE /artists/:artist_id/assets/:asset_id
   def destroy
-    user = User.find(params[:user_id])
+    user = User.find(params[:artist_id])
     asset = Asset.find(params[:id])
 
     if user == current_user
@@ -111,26 +120,19 @@ class AssetsController < ApplicationController
     end
   end
 
-
-  def signS3put
-    objectName = params[:s3_object_name]
-    mimeType = params['s3_object_type']
-    expires = Time.now.to_i + 100 # PUT request to S3 must start within 100 seconds
-
-    amzHeaders = "x-amz-acl:public-read" # set the public read permission on the uploaded file
-    stringToSign = "PUT\n\n#{mimeType}\n#{expires}\n#{amzHeaders}\n/#{S3_BUCKET_NAME}/#{objectName}";
-    sig = CGI::escape(Base64.strict_encode64(OpenSSL::HMAC.digest('sha1', S3_SECRET_KEY, stringToSign)))
-    
-    jsonToReturn = {
-      signed_request: CGI::escape("https://s3.amazonaws.com/#{S3_BUCKET_NAME}/#{objectName}?AWSAccessKeyId=#{S3_ACCESS_KEY}&Expires=#{expires}&Signature=#{sig}"),
-      url: "http://s3.amazonaws.com/#{S3_BUCKET_NAME}/#{objectName}"
-    }.to_json
-
-    render json: jsonToReturn
-  end
-
   private
     def asset_params
-      params.require(:asset).permit(:user_id, :uri)
+      params.require(:asset).permit(:artist_id, :uri)
+    end
+
+    # Payment is required of non-artist/adminitrator users to list or view assets
+    def require_payment
+      case
+      when current_user.role.name == "administrator"
+        true
+      when current_user.id == params[:artist_id]
+        true  # Artists can view their own works
+      unless %w(artist administrator).include?(current_user.role.name)
+      end
     end
 end
