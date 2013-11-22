@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-  before_filter :require_login_from_http_basic, :only => [:login_from_http_basic]
-  before_filter :require_administrator
-  skip_before_filter :require_login, :only => [:index, :new, :create, :activate, :login_from_http_basic]
+  before_filter :require_administrator, :only => [:index, :new, :create]
+  before_filter :lookup_user, :only => [:show, :edit, :update, :destroy]
+  before_filter :require_this_user, :only => [:show, :edit, :update, :destroy]
 
   # GET /users
   # GET /users.json
@@ -17,8 +17,6 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    @user = User.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.json  { render :json => @user }
@@ -38,7 +36,6 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    @user = User.find(params[:id])
   end
 
   # POST /users
@@ -60,9 +57,6 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.json
   def update
-    @user = User.find(params[:id])
-
-
     respond_to do |format|
       byebug
       if @user.update_attributes(user_params)
@@ -78,7 +72,6 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user = User.find(params[:id])
     @user.destroy
 
     respond_to do |format|
@@ -95,17 +88,20 @@ class UsersController < ApplicationController
       not_authenticated
     end
   end
-  
-  # The before filter requires authentication using HTTP Basic,
-  # And this action redirects and sets a success notice.
-  def login_from_http_basic
-    redirect_to users_path, :notice => 'Login from basic auth successful'
+
+  protected
+  def user_params
+    params.require(:user).permit(:email, :name, :role_id)
   end
 
+  def lookup_user
+    @user = User.find(params[:id])
+  end
 
-  private
-    def user_params
-      params.require(:user).permit(:email, :name, :role_id)
+  def require_this_user
+    unless current_user.administrator? || @user == current_user
+      flash[:warning] = "Attempt to access a different user"
+      redirect_to controller: "home", action: "index"
     end
-
+  end
 end

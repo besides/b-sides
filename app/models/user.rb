@@ -10,4 +10,6 @@ class User < ActiveRecord::Base
 
   belongs_to :role
 
+  def administrator?; self.role && self.role.name == "administrator"; end
+  def artist?; self.role && self.role.name == "artist"; end
 end
