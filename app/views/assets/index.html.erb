@@ -1,11 +1,11 @@
 <h3>Assets</h3>
-<% if !current_user.nil? %>
-	<%= link_to 'Upload New Asset', new_user_asset_path(current_user) %>
+<% if logged_in? && (current_user == @artist || current_user.administrator?) %>
+	<%= link_to 'Upload New Asset', new_artist_asset_path(@artist) %>
 <% end %>  
 <div class="assets">
   <% @assets.each do |asset| %>
   	<div class="asset">
-  	    <h4><%= link_to asset.uri, user_asset_path(asset.user, asset) %></h4>
+  	    <h4><%= link_to asset.uri, artist_asset_path(@artist, asset) %></h4>
   	</div>
   <% end %>
 </div>

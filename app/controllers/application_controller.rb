@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
 
   # Only allowed for an administrator or a particular artist
   def require_artist
-    unless logged_in? && current_user.artist?
+    unless logged_in? && (current_user.artist? || current_user.administrator?)
       flash[:warning] = "Only artists can access the #{controller_name} controller"
       redirect_to controller: "home", action: "index"
     end

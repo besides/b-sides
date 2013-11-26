@@ -1,6 +1,6 @@
 <h2>New Asset</h2>
 
 <h3>Upload Asset</h3>
-<%= s3_uploader_form callback_url: user_assets(current_user), callback_param: "asset[uri]", id: "s3-uploader" do %>
+<%= s3_uploader_form callback_url: artist_assets_path(@artist), callback_param: "asset[uri]", id: "s3-uploader" do %>
 	<%= file_field_tag :file, multiple: false %>
 <% end %>

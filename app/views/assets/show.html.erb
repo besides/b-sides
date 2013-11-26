@@ -1,2 +1,5 @@
-<h1>Assets#show</h1>
-<p>Find me in app/views/assets/show.html.erb</p>
+<% if @asset.new_record? %>
+  alert("Failed to upload model: <%= j @asset.errors.full_messages.join(', ').html_safe %>");
+<% else %>
+  $("#container").append("<%= j render(@asset) %>");
+<% end %>

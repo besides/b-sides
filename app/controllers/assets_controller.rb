@@ -2,22 +2,13 @@
 # Manipulate assets of a particular artist (User)
 class AssetsController < ApplicationController
   before_filter :lookup_artist
-  before_filter :lookup_asset, :only => [:show, :edit, :update, :destroy, :pay, :postPay]
+  before_filter :lookup_asset, :only => [:show, :edit, :update, :destroy, :postPay]
   before_filter :require_artist, :except => [:index, :show]
   before_filter :require_payment, :only => [:index, :show]
 
   # GET /artists/:artist_id/assets/
   def index
     @assets = @artist.assets
-  end
-
-  # Have a user pay to get access to an artist's assets
-  # GET /artists/:artist_id/assets/pay
-  def pay
-    if !UserAssetPurchase.where(user: current_user, asset: @asset).empty?
-      redirect_to user_asset_path(@asset.user, @asset)
-    end
-
   end
 
   # POST /artists/:artist_id/assets/pay
@@ -127,10 +118,16 @@ class AssetsController < ApplicationController
   def require_payment
     case
     when current_user.role.name == "administrator"
-      true
+      true  # Administrators can view assets
     when current_user.id == params[:artist_id]
       true  # Artists can view their own works
-    unless %w(artist administrator).include?(current_user.role.name)
+    else
+      # Unless the user has a subscription, Have a user pay to get access to an artist's assets
+      # GET /artists/:artist_id/assets/pay
+      if !UserSubscription.where(user: current_user, artist: @artist).empty?
+        redirect_to artist_pay_path(@artist)
+      end
+      true
     end
   end
 end

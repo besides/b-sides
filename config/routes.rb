@@ -1,21 +1,12 @@
 BSides::Application.routes.draw do
   root :to => 'home#index'
 
-  resources :users do
-    collection do
-      get :login_from_http_basic
-    end
-    member do
-      get :activate
-    end
-    resources :assets
-    get   'assets/:id/pay' => "assets#pay",      :as => 'asset_pay' 
-    post  'assets/:id/pay' => "assets#postPay",  :as => 'asset_pay_post' 
-  end
-
+  resources :users
   resources :user_sessions
   resources :artists, as: "artists" do
     resources :assets, as: "assets"
+    get   'pay' => "assets#pay",      :as => 'pay' 
+    post  'pay' => "assets#postPay",  :as => 'pay_post' 
   end
 
   match 'login' => 'user_sessions#new', :as => :login, :via => :get
