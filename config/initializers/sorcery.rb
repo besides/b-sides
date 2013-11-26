@@ -408,28 +408,10 @@ Rails.application.config.sorcery.configure do |config|
 
 
     # -- external --
-    # Class which holds the various external provider data for this user.
-    # Default: `nil`
-    #
     user.authentications_class = Authentication
-
-
-    # User's identifier in authentications class.
-    # Default: `:user_id`
-    #
-    # user.authentications_user_id_attribute_name =
-
-
-    # Provider's identifier in authentications class.
-    # Default: `:provider`
-    #
-    # user.provider_attribute_name =
-
-
-    # User's external unique identifier in authentications class.
-    # Default: `:uid`
-    #
-    # user.provider_uid_attribute_name =
+    user.authentications_user_id_attribute_name = :user_id
+    user.provider_attribute_name = :provider
+    user.provider_uid_attribute_name = :uid
   end
 
   # This line must come after the 'user config' block.

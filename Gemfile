@@ -33,6 +33,7 @@ group :development do
   gem 'rb-fsevent', :require=>false
   gem 'rb-inotify', :require=>false
   gem 'byebug'
+  gem 'wirble'
 end
 group :production do
   gem 'rails_12factor'
