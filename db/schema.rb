@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131122221339) do
+ActiveRecord::Schema.define(version: 20131126223933) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 20131122221339) do
     t.datetime "updated_at"
   end
 
-  create_table "user_subscription", force: true do |t|
+  create_table "user_subscriptions", force: true do |t|
     t.integer  "user_id"
     t.integer  "artist_id"
     t.datetime "expires"
@@ -60,8 +60,8 @@ ActiveRecord::Schema.define(version: 20131122221339) do
     t.datetime "updated_at"
   end
 
-  add_index "user_subscription", ["artist_id"], name: "index_user_subscription_on_artist_id", using: :btree
-  add_index "user_subscription", ["user_id"], name: "index_user_subscription_on_user_id", using: :btree
+  add_index "user_subscriptions", ["artist_id"], name: "index_user_subscriptions_on_artist_id", using: :btree
+  add_index "user_subscriptions", ["user_id"], name: "index_user_subscriptions_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email"

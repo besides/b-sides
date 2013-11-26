@@ -1,0 +1,17 @@
+<h1>Listing subscriptions for <%= current_user.name %></h1>
+<p id="notice"><%= notice %></p>
+<p id="alert"><%= alert %></p>
+<table>
+  <tr>
+    <th>Artist</th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @subscriptions.each do |subscription| %>
+  <tr>
+    <td><%= h subscription.artist.name %></td>
+    <td><%= link_to 'Destroy', subscription, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>

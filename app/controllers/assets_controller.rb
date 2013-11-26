@@ -2,7 +2,7 @@
 # Manipulate assets of a particular artist (User)
 class AssetsController < ApplicationController
   before_filter :lookup_artist
-  before_filter :lookup_asset, :only => [:show, :edit, :update, :destroy, :postPay]
+  before_filter :lookup_asset, :only => [:show, :edit, :update, :destroy]
   before_filter :require_artist, :except => [:index, :show]
   before_filter :require_payment, :only => [:index, :show]
 
@@ -11,36 +11,9 @@ class AssetsController < ApplicationController
     @assets = @artist.assets
   end
 
-  # POST /artists/:artist_id/assets/pay
-  def postPay
-    begin
-      Stripe::Charge.create(
-        :amount => ENV['ASSET_FEE'],
-        :currency => "usd",
-        :card => params[:stripe_token], # obtained with Stripe.js
-        :description => "Charge for asset"
-      )
-
-      @userPurchase = UserAssetPurchase.new
-      @userPurchase.user = current_user
-      @userPurchase.asset = asset
-
-      @userPurchase.save
-
-      redirect_to user_asset_pay_path(@asset.user, @asset)
-    rescue Stripe::CardError => e
-      err  = e.json_body[:error]
-      flash.now[:error] = err.message
-      render 'pay'
-    end
-  end
-
   # Show a particular asset
   # GET /artists/:artist_id/assets/:asset_id
   def show
-    if UserAssetPurchase.where(user: current_user, asset: @asset).empty?
-      redirect_to user_asset_pay_path(@asset.user, @asset)
-    end
   end
 
   # GET /artists/:artist_id/assets/new
@@ -123,11 +96,9 @@ class AssetsController < ApplicationController
       true  # Artists can view their own works
     else
       # Unless the user has a subscription, Have a user pay to get access to an artist's assets
-      # GET /artists/:artist_id/assets/pay
-      if !UserSubscription.where(user: current_user, artist: @artist).empty?
-        redirect_to artist_pay_path(@artist)
+      if current_user.user_subscriptions.where(artist: @artist).empty?
+        redirect_to new_artist_subscription_path(@artist)
       end
-      true
     end
   end
 end
