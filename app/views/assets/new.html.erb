@@ -11,3 +11,15 @@
 <%= s3_uploader_form callback_url: artist_assets_path(@artist), callback_param: "asset[uri]", id: "s3-uploader" do %>
 	<%= file_field_tag :file, multiple: false %>
 <% end %>
+
+<%= form_for(@asset) do |f| %>
+
+<!--    <%= f.label :name, "Title" %>
+    <%= f.text_field :name %>
+    <%= f.label :category, "Category" %>
+    <%= f.text_field :category %>
+    <br>
+-->
+    <%= f.submit "Upload", id: "btn-upload-asset", class: "btn btn-large btn-warning btn-upload" %>
+
+<% end %>
